@@ -3,7 +3,7 @@
   "displayName": "Kotlin Project Generator",
   "description": "Generates Kotlin projects like Java projects",
   "version": "1.0.0",
-  "publisher": "",
+  "publisher": "thomas-dev",
   "engines": {
     "vscode": "^1.74.0"
   },
