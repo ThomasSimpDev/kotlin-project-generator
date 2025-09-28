@@ -13,23 +13,24 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # 2. Set up Xvfb
-      - name: Setup Xvfb
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y xvfb
-          export DISPLAY=':99'
-          Xvfb :99 -screen 0 1280x1024x24 &
-          
-      # 3. Set up Node.js
+      # 2. Set up Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 20
 
-      # 4. Install dependencies
+      # 3. Install dependencies
       - name: Install dependencies
         run: npm install
+
+      # 4. Set up Xvfb for headless VS Code tests
+      - name: Setup Xvfb
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xvfb
+          export DISPLAY=:99
+          Xvfb :99 -screen 0 1280x1024x24 &
+        shell: bash
 
       # 5. Compile TypeScript
       - name: Compile
@@ -38,10 +39,12 @@ jobs:
       # 6. Run tests
       - name: Run tests
         run: npm run test
+        env:
+          DISPLAY: :99
 
       # 7. Publish to VS Code Marketplace
       - name: Publish Extension
         if: success()
-        run: npx vsce publish --packagePath ./package.json
+        run: npx vsce publish
         env:
           VSCE_PAT: ${{ secrets.VSCE_PAT }}
