@@ -1,0 +1,39 @@
+name: Test and Publish VS Code Extension
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  test-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      # 1. Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # 2. Set up Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      # 3. Install dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # 4. Compile TypeScript
+      - name: Compile
+        run: npm run compile
+
+      # 5. Run tests
+      - name: Run tests
+        run: npm run test
+
+      # 6. Publish to VS Code Marketplace
+      - name: Publish Extension
+        if: success()
+        run: npx vsce publish --packagePath ./package.json
+        env:
+          VSCE_PAT: ${{ secrets.VSCE_PAT }}
