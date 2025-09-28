@@ -2,8 +2,12 @@
   "name": "kotlin-project-generator",
   "displayName": "Kotlin Project Generator",
   "description": "Generates Kotlin projects like Java projects",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "publisher": "thomas-dev",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ThomasSimpDev/kotlin-project-generator.git"
+  },
   "engines": {
     "vscode": "^1.74.0"
   },
