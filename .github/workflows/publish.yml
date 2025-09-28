@@ -13,25 +13,33 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # 2. Set up Node.js
+      # 2. Set up Xvfb
+      - name: Setup Xvfb
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xvfb
+          export DISPLAY=':99'
+          Xvfb :99 -screen 0 1280x1024x24 &
+          
+      # 3. Set up Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 20
 
-      # 3. Install dependencies
+      # 4. Install dependencies
       - name: Install dependencies
         run: npm install
 
-      # 4. Compile TypeScript
+      # 5. Compile TypeScript
       - name: Compile
         run: npm run compile
 
-      # 5. Run tests
+      # 6. Run tests
       - name: Run tests
         run: npm run test
 
-      # 6. Publish to VS Code Marketplace
+      # 7. Publish to VS Code Marketplace
       - name: Publish Extension
         if: success()
         run: npx vsce publish --packagePath ./package.json
